@@ -3,7 +3,7 @@ const row2 = ['React Native', 'jQuery', 'Bootstrap', 'Tailwind CSS', 'AJAX', 'My
 
 export default function SkillsMarquee() {
   return (
-    <section className="skills-marquee">
+    <section className="skills-marquee" id="skills-marquee">
       <div className="marquee-track">
         {[...row1, ...row1].map((skill, i) => (
           <span className="marquee-item" key={`r1-${i}`}>{skill}</span>

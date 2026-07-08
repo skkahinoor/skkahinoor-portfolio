@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -9,6 +9,9 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import { Canvas } from '@react-three/fiber';
+import { Environment } from '@react-three/drei';
+import AbstractShape from './components/AbstractShape';
 
 export default function App() {
   useEffect(() => {
@@ -36,6 +39,18 @@ export default function App() {
       <div className="ambient-background">
         <div className="ambient-orb orb-1"></div>
         <div className="ambient-orb orb-2"></div>
+      </div>
+      
+      {/* Global WebGL Canvas for Scroll-driven 3D Elements */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, opacity: 0.55, pointerEvents: 'none' }}>
+        <Canvas camera={{ position: [0, 2, 8], fov: 45 }}>
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[10, 10, 10]} intensity={1.2} />
+          <Suspense fallback={null}>
+            <AbstractShape />
+          </Suspense>
+          <Environment preset="city" />
+        </Canvas>
       </div>
 
       <Navbar />
