@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, Grid } from '@react-three/drei';
@@ -8,6 +8,15 @@ import { SiMysql, SiTailwindcss } from 'react-icons/si';
 
 export default function Hero() {
   const skillBarsRef = useRef(null);
+  const [heroVisible, setHeroVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHeroVisible(window.scrollY < window.innerHeight);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -47,7 +56,15 @@ export default function Hero() {
 
   return (
     <section className="hero" id="hero" style={{ position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, opacity: 0.6, pointerEvents: 'none' }}>
+      <div style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 0,
+        opacity: heroVisible ? 0.6 : 0,
+        pointerEvents: 'none',
+        visibility: heroVisible ? 'visible' : 'hidden',
+        transition: 'opacity 0.2s, visibility 0.2s'
+      }}>
         <Canvas camera={{ position: [0, 2, 8], fov: 45 }}>
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 10]} intensity={1} />
